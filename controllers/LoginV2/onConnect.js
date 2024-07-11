@@ -1,20 +1,12 @@
-const LOGIIN_METHOD = process.env.LOGIN_METHOD;
-import { OTP, STANDARD } from './login-flows/index.js';
+import { getAuthFlow } from './login-flows/index.js';
+
+const LOGIN_METHOD = process.env.LOGIN_METHOD;
+
 const onConnect = (req, res, next) => {
-  let response;
-
-  switch (LOGIIN_METHOD) {
-    case 'OTP':
-      response = OTP;
-      break;
-
-    case 'STANDARD':
-      response = STANDARD;
-      break;
-    default:
-      return res.status(500).json({ message: 'Invalid login method' });
-  }
-
+  console.log(req?.body);
+  const { action, data } = req.body;
+  const authFlow = getAuthFlow(LOGIN_METHOD);
+  const response = authFlow.handleAction(action, data);
   res.json(response);
 };
 
