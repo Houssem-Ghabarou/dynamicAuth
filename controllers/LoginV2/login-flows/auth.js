@@ -1,6 +1,6 @@
 // auth.js
 export const auth = {
-  userTypes: ['standard', 'admin'], // Add or remove user types as needed
+  userTypes: ['standard', 'admin'],
   flows: {
     standard: {
       states: {
@@ -21,30 +21,50 @@ export const auth = {
           descriptions: {
             description1: 'Standard user login description',
           },
-          onClickForgotPassword: {
-            nextUI: 'forgotPassword',
-            api: '/api/standard/forgotpassword',
-            method: 'POST',
-          },
-          onSubmitFinally: {
-            nextUI: 'success',
-            api: 'https://jsonplaceholder.typicode.com/posts',
-            method: 'POST',
-          },
+          buttons: [
+            {
+              id: 'btn_forgot_password',
+              text: 'Forgot Password',
+              action: {
+                nextUI: 'forgotPassword',
+                api: '/api/standard/forgotpassword',
+                method: 'POST',
+              },
+            },
+            {
+              id: 'btn_login',
+              text: 'Login',
+              action: {
+                nextUI: 'success',
+                api: 'https://jsonplaceholder.typicode.com/posts',
+                method: 'POST',
+              },
+            },
+          ],
         },
         forgotPassword: {
           screenTitle: 'Standard User Forgot Password',
           fields: [
             { name: 'email', type: 'email', placeholder: 'Enter email' },
           ],
-          onSubmitFinally: {
-            nextUI: 'initialState',
-            api: 'https://jsonplaceholder.typicode.com/posts',
-            method: 'GET',
-          },
-          onClickBack: {
-            nextUI: 'initialState',
-          },
+          buttons: [
+            {
+              id: 'btn_reset_password',
+              text: 'Reset Password',
+              action: {
+                nextUI: 'initialState',
+                api: 'https://jsonplaceholder.typicode.com/todos/',
+                method: 'POST',
+              },
+            },
+            {
+              id: 'btn_back_to_login',
+              text: 'Back to Login',
+              action: {
+                nextUI: 'initialState',
+              },
+            },
+          ],
         },
         success: {
           screenTitle: 'Standard User Login Successful',
@@ -76,30 +96,50 @@ export const auth = {
           descriptions: {
             description1: 'Admin login description',
           },
-          onClickForgotPassword: {
-            nextUI: 'forgotPassword',
-            api: '/api/admin/forgotpassword',
-            method: 'POST',
-          },
-          onSubmitFinally: {
-            nextUI: 'success',
-            api: '/api/admin/login',
-            method: 'POST',
-          },
+          buttons: [
+            {
+              id: 'btn_admin_forgot_password',
+              text: 'Forgot Password',
+              action: {
+                nextUI: 'forgotPassword',
+                api: '/api/admin/forgotpassword',
+                method: 'POST',
+              },
+            },
+            {
+              id: 'btn_admin_login',
+              text: 'Login',
+              action: {
+                nextUI: 'success',
+                api: '/api/admin/login',
+                method: 'POST',
+              },
+            },
+          ],
         },
         forgotPassword: {
           screenTitle: 'Admin Forgot Password',
           fields: [
             { name: 'email', type: 'email', placeholder: 'Enter admin email' },
           ],
-          onSubmitFinally: {
-            nextUI: 'initialState',
-            api: '/api/admin/resetpassword',
-            method: 'POST',
-          },
-          onClickBack: {
-            nextUI: 'initialState',
-          },
+          buttons: [
+            {
+              id: 'btn_admin_reset_password',
+              text: 'Reset Password',
+              action: {
+                nextUI: 'initialState',
+                api: '/api/admin/resetpassword',
+                method: 'POST',
+              },
+            },
+            {
+              id: 'btn_admin_back_to_login',
+              text: 'Back to Login',
+              action: {
+                nextUI: 'initialState',
+              },
+            },
+          ],
         },
         success: {
           screenTitle: 'Admin Login Successful',
@@ -116,4 +156,5 @@ export const returnedKeys = [
   'titles',
   'successMessage',
   'descriptions',
+  'buttons',
 ];

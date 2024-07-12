@@ -13,25 +13,28 @@ const onConnect = async (req, res) => {
       const flow = auth?.flows?.[userType];
       const currentState = flow?.states?.[state] || flow?.states?.initialState;
 
-      response[userType] = {};
+      response[userType] = {
+        UI: {},
+      };
 
-      let UI = {};
       returnedKeys.forEach((key) => {
         if (currentState[key]) {
-          // response[userType][key] = currentState?.[key];
-          UI[key] = currentState?.[key];
-          response[userType].UI = UI;
+          response[userType].UI[key] = currentState?.[key];
         }
       });
 
-      response[userType].UI.actions = Object?.keys(currentState)?.filter(
-        (key) => !returnedKeys?.includes(key)
-      );
+      // Include buttons in the UI object
+      if (currentState.buttons) {
+        response[userType].UI.buttons = currentState.buttons.map((button) => ({
+          id: button.id,
+          text: button.text,
+        }));
+      }
     }
 
     res.json(response);
   } else if (req?.method === 'POST') {
-    const { currentState, action, data, userType = 'standard' } = req.body;
+    const { currentState, buttonId, data, userType = 'standard' } = req.body;
 
     if (!auth.userTypes.includes(userType)) {
       return res.status(400).json({ error: 'Invalid user type' });
@@ -44,12 +47,17 @@ const onConnect = async (req, res) => {
       return res.status(400).json({ error: 'Invalid state' });
     }
 
-    const actionConfig = state?.[action];
+    const button = state.buttons?.find((btn) => {
+      return btn.id === buttonId;
+    });
 
-    if (!actionConfig) {
-      return res.status(400).json({ error: 'Invalid action' });
+    if (!button) {
+      return res.status(400).json({ error: 'Invalid button ID' });
     }
 
+    const actionConfig = button.action;
+
+    console.log(actionConfig, 'actionConfig');
     try {
       const responseData = await onSubmit(
         actionConfig.nextUI,
@@ -64,19 +72,21 @@ const onConnect = async (req, res) => {
 
       const nextState = flow?.states?.[actionConfig?.nextUI];
 
-      let UI = {};
       if (nextState) {
+        responseData.UI = {};
         returnedKeys.forEach((key) => {
           if (nextState[key]) {
-            UI[key] = nextState?.[key];
+            responseData.UI[key] = nextState?.[key];
           }
         });
 
-        responseData.UI = UI;
-
-        responseData.UI.actions = Object?.keys(nextState)?.filter(
-          (key) => !returnedKeys?.includes(key)
-        );
+        // Include buttons in the UI object for the next state
+        if (nextState.buttons) {
+          responseData.UI.buttons = nextState.buttons.map((button) => ({
+            id: button.id,
+            text: button.text,
+          }));
+        }
       }
 
       res.json(responseData);
