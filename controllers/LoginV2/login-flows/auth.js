@@ -39,8 +39,8 @@ export const auth = {
           ],
           onSubmitFinally: {
             nextUI: 'initialState',
-            api: '/api/standard/resetpassword',
-            method: 'POST',
+            api: 'https://jsonplaceholder.typicode.com/posts',
+            method: 'GET',
           },
           onClickBack: {
             nextUI: 'initialState',

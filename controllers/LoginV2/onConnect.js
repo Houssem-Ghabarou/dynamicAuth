@@ -15,13 +15,16 @@ const onConnect = async (req, res) => {
 
       response[userType] = {};
 
+      let UI = {};
       returnedKeys.forEach((key) => {
         if (currentState[key]) {
-          response[userType][key] = currentState?.[key];
+          // response[userType][key] = currentState?.[key];
+          UI[key] = currentState?.[key];
+          response[userType].UI = UI;
         }
       });
 
-      response[userType].actions = Object?.keys(currentState)?.filter(
+      response[userType].UI.actions = Object?.keys(currentState)?.filter(
         (key) => !returnedKeys?.includes(key)
       );
     }
@@ -61,14 +64,17 @@ const onConnect = async (req, res) => {
 
       const nextState = flow?.states?.[actionConfig?.nextUI];
 
+      let UI = {};
       if (nextState) {
         returnedKeys.forEach((key) => {
           if (nextState[key]) {
-            responseData[key] = nextState?.[key];
+            UI[key] = nextState?.[key];
           }
         });
 
-        responseData.actions = Object?.keys(nextState)?.filter(
+        responseData.UI = UI;
+
+        responseData.UI.actions = Object?.keys(nextState)?.filter(
           (key) => !returnedKeys?.includes(key)
         );
       }
