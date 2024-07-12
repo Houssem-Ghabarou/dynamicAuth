@@ -1,45 +1,111 @@
+// auth.js
 export const auth = {
-  states: {
-    initialState: {
-      screenTitle: 'LoginScreen',
-      titles: {
-        title1: 'Text Field Title',
-        title2: 'This is a generic Description.',
-      },
-
-      fields: [
-        { name: 'username', type: 'text', placeholder: 'Enter username' },
-        { name: 'password', type: 'password', placeholder: 'Enter password' },
-        //email
-        { name: 'email', type: 'email', placeholder: 'Enter email' },
-      ],
-
-      onClickForgotPassword: {
-        nextUI: 'forgotPassword',
-        api: '/api/forgotpassword',
-        method: 'POST',
-      },
-      onSubmitFinally: {
-        nextUI: 'success',
-        api: 'https://jsonplaceholder.typicode.com/posts',
-        method: 'POST',
+  userTypes: ['standard', 'admin'], // Add or remove user types as needed
+  flows: {
+    standard: {
+      states: {
+        initialState: {
+          screenTitle: 'Standard User Login',
+          titles: {
+            title1: 'Welcome Standard User',
+            title2: 'Please log in',
+          },
+          fields: [
+            { name: 'username', type: 'text', placeholder: 'Enter username' },
+            {
+              name: 'password',
+              type: 'password',
+              placeholder: 'Enter password',
+            },
+          ],
+          descriptions: {
+            description1: 'Standard user login description',
+          },
+          onClickForgotPassword: {
+            nextUI: 'forgotPassword',
+            api: '/api/standard/forgotpassword',
+            method: 'POST',
+          },
+          onSubmitFinally: {
+            nextUI: 'success',
+            api: 'https://jsonplaceholder.typicode.com/posts',
+            method: 'POST',
+          },
+        },
+        forgotPassword: {
+          screenTitle: 'Standard User Forgot Password',
+          fields: [
+            { name: 'email', type: 'email', placeholder: 'Enter email' },
+          ],
+          onSubmitFinally: {
+            nextUI: 'initialState',
+            api: '/api/standard/resetpassword',
+            method: 'POST',
+          },
+          onClickBack: {
+            nextUI: 'initialState',
+          },
+        },
+        success: {
+          screenTitle: 'Standard User Login Successful',
+          successMessage: 'Standard User Login Successful!',
+        },
       },
     },
-    forgotPassword: {
-      screenTitle: 'ForgotPasswordScreen',
-      fields: [{ name: 'email', type: 'email', placeholder: 'Enter email' }],
-      onSubmitFinally: {
-        nextUI: 'initialState',
-        api: 'http://localhost:3000/',
-        method: 'GET',
+    admin: {
+      states: {
+        initialState: {
+          screenTitle: 'Admin Login',
+          titles: {
+            title1: 'Welcome Admin',
+            title2: 'Please log in',
+          },
+          fields: [
+            {
+              name: 'username',
+              type: 'text',
+              placeholder: 'Enter admin username',
+            },
+            {
+              name: 'password',
+              type: 'password',
+              placeholder: 'Enter admin password',
+            },
+            { name: 'twoFactor', type: 'text', placeholder: 'Enter 2FA code' },
+          ],
+          descriptions: {
+            description1: 'Admin login description',
+          },
+          onClickForgotPassword: {
+            nextUI: 'forgotPassword',
+            api: '/api/admin/forgotpassword',
+            method: 'POST',
+          },
+          onSubmitFinally: {
+            nextUI: 'success',
+            api: '/api/admin/login',
+            method: 'POST',
+          },
+        },
+        forgotPassword: {
+          screenTitle: 'Admin Forgot Password',
+          fields: [
+            { name: 'email', type: 'email', placeholder: 'Enter admin email' },
+          ],
+          onSubmitFinally: {
+            nextUI: 'initialState',
+            api: '/api/admin/resetpassword',
+            method: 'POST',
+          },
+          onClickBack: {
+            nextUI: 'initialState',
+          },
+        },
+        success: {
+          screenTitle: 'Admin Login Successful',
+          successMessage: 'Admin Login Successful!',
+        },
       },
-      onClickBack: {
-        nextUI: 'initialState',
-      },
-    },
-    success: {
-      screenTitle: 'SuccessScreen',
-      successMessage: 'Login Successful!',
     },
   },
 };
@@ -49,4 +115,5 @@ export const returnedKeys = [
   'fields',
   'titles',
   'successMessage',
+  'descriptions',
 ];

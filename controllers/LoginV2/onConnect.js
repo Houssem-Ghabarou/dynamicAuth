@@ -2,27 +2,40 @@ import { auth, returnedKeys } from './login-flows/auth.js';
 import { onSubmit } from './login-flows/onSubmit.js';
 
 const onConnect = async (req, res) => {
-  if (req.method === 'GET') {
-    const { state } = req.query;
-    console.log(state || 'no state provided in initiale', 'currentState');
-
-    const initialState = auth?.states?.[state] || auth?.states?.initialState;
+  if (req?.method === 'GET') {
+    const { state = 'initialState' } = req?.query;
+    console.log(state || 'no state provided in initial', 'currentState');
 
     const response = {};
-    returnedKeys.forEach((key) => {
-      if (initialState[key]) {
-        response[key] = initialState?.[key];
-      }
-    });
 
-    response.actions = Object.keys(initialState).filter(
-      (key) => !returnedKeys?.includes(key)
-    );
+    // Process each user type
+    for (const userType of auth?.userTypes) {
+      const flow = auth?.flows?.[userType];
+      const currentState = flow?.states?.[state] || flow?.states?.initialState;
+
+      response[userType] = {};
+
+      returnedKeys.forEach((key) => {
+        if (currentState[key]) {
+          response[userType][key] = currentState?.[key];
+        }
+      });
+
+      response[userType].actions = Object?.keys(currentState)?.filter(
+        (key) => !returnedKeys?.includes(key)
+      );
+    }
 
     res.json(response);
-  } else if (req.method === 'POST') {
-    const { currentState, action, data } = req.body;
-    const state = auth?.states?.[currentState];
+  } else if (req?.method === 'POST') {
+    const { currentState, action, data, userType = 'standard' } = req.body;
+
+    if (!auth.userTypes.includes(userType)) {
+      return res.status(400).json({ error: 'Invalid user type' });
+    }
+
+    const flow = auth?.flows?.[userType];
+    const state = flow?.states?.[currentState];
 
     if (!state) {
       return res.status(400).json({ error: 'Invalid state' });
@@ -36,27 +49,27 @@ const onConnect = async (req, res) => {
 
     try {
       const responseData = await onSubmit(
-        actionConfig?.nextUI,
-        actionConfig?.api,
-        actionConfig?.method,
+        actionConfig.nextUI,
+        actionConfig.api,
+        actionConfig.method,
         data
       );
 
       if (responseData?.errorMessage) {
-        return res.status(400).json({ error: responseData.errorMessage });
+        return res.status(400).json({ error: responseData?.errorMessage });
       }
 
-      const nextState = auth?.states[actionConfig?.nextUI];
+      const nextState = flow?.states?.[actionConfig?.nextUI];
 
       if (nextState) {
         returnedKeys.forEach((key) => {
           if (nextState[key]) {
-            responseData[key] = nextState[key];
+            responseData[key] = nextState?.[key];
           }
         });
 
-        responseData.actions = Object?.keys(nextState).filter(
-          (key) => !returnedKeys.includes(key)
+        responseData.actions = Object?.keys(nextState)?.filter(
+          (key) => !returnedKeys?.includes(key)
         );
       }
 
