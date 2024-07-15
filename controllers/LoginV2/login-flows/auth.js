@@ -5,61 +5,81 @@ export const auth = {
     standard: {
       states: {
         initialState: {
-          screenTitle: 'Standard User Login',
+          screenTitle: 'OTP LOGIN',
           titles: {
-            title1: 'Welcome Standard User',
-            title2: 'Please log in',
+            title1: 'Welcome User',
+            title2: 'Please log in with otp',
           },
           fields: [
             { name: 'username', type: 'text', placeholder: 'Enter username' },
+            { name: 'username', type: 'text', placeholder: 'Enter username' },
+            { name: 'username', type: 'text', placeholder: 'Enter username' },
+            { name: 'username', type: 'text', placeholder: 'Enter username' },
+
             {
-              name: 'password',
-              type: 'password',
-              placeholder: 'Enter password',
+              name: 'phone',
+              type: 'phone',
+              placeholder: 'Enter Phone',
             },
           ],
           descriptions: {
-            description1: 'Standard user login description',
+            description1: 'otp login with phone',
           },
           buttons: [
             {
-              id: 'btn_forgot_password',
-              text: 'Forgot Password',
+              id: 'btn_send_code',
+              text: 'Send code',
               action: {
-                nextUI: 'forgotPassword',
-                api: '/api/standard/forgotpassword',
+                nextUI: 'inputCode',
+                api: 'https://jsonplaceholder.typicode.com/todos/1',
                 method: 'POST',
               },
             },
             {
-              id: 'btn_login',
-              text: 'Login',
+              id: 'btn_send_code',
+              text: 'Send code',
               action: {
-                nextUI: 'success',
-                api: 'https://jsonplaceholder.typicode.com/posts',
+                nextUI: 'inputCode',
+                api: 'https://jsonplaceholder.typicode.com/todos/1',
+                method: 'POST',
+              },
+            },
+            {
+              id: 'btn_send_code',
+              text: 'Send code',
+              action: {
+                nextUI: 'inputCode',
+                api: 'https://jsonplaceholder.typicode.com/todos/1',
                 method: 'POST',
               },
             },
           ],
         },
-        forgotPassword: {
-          screenTitle: 'Standard User Forgot Password',
-          fields: [
-            { name: 'email', type: 'email', placeholder: 'Enter email' },
-          ],
+        inputCode: {
+          screenTitle: 'Enter Code',
+          fields: [{ name: 'code', type: 'code', placeholder: 'enter code' }],
           buttons: [
             {
-              id: 'btn_reset_password',
-              text: 'Reset Password',
+              id: 'verify_code',
+              text: 'verify code',
               action: {
-                nextUI: 'initialState',
+                nextUI: 'success',
+                api: 'https://jsonplaceholder.typicode.com/todos/',
+                method: 'POST',
+              },
+            },
+            //resend code button
+            {
+              id: 'btn_resend_code',
+              text: 'Resend Code',
+              action: {
                 api: 'https://jsonplaceholder.typicode.com/todos/',
                 method: 'POST',
               },
             },
             {
-              id: 'btn_back_to_login',
-              text: 'Back to Login',
+              id: 'btn_back_to_otp_login',
+              text: 'Back to otp Login',
               action: {
                 nextUI: 'initialState',
               },
@@ -67,8 +87,8 @@ export const auth = {
           ],
         },
         success: {
-          screenTitle: 'Standard User Login Successful',
-          successMessage: 'Standard User Login Successful!',
+          screenTitle: 'OTP User Login Successful',
+          successMessage: 'OTP User Login Successful!',
         },
       },
     },

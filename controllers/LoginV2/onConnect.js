@@ -8,27 +8,34 @@ const onConnect = async (req, res) => {
 
     const response = {};
 
-    // Process each user type
+    // Processing each user type
     for (const userType of auth?.userTypes) {
       const flow = auth?.flows?.[userType];
+      if (!flow) {
+        /// go to next iteration or if it s on last iteration then break
+        continue;
+      }
       const currentState = flow?.states?.[state] || flow?.states?.initialState;
 
       response[userType] = {
         UI: {},
       };
 
-      returnedKeys.forEach((key) => {
-        if (currentState[key]) {
+      returnedKeys?.forEach((key) => {
+        if (currentState?.[key]) {
           response[userType].UI[key] = currentState?.[key];
         }
       });
 
-      // Include buttons in the UI object
-      if (currentState.buttons) {
-        response[userType].UI.buttons = currentState.buttons.map((button) => ({
-          id: button.id,
-          text: button.text,
-        }));
+      // Includeing buttons in the UI object
+      if (currentState?.buttons) {
+        response[userType].UI.buttons = currentState?.buttons?.map(
+          (button) => ({
+            id: button?.id,
+            text: button?.text,
+            action: button?.action,
+          })
+        );
       }
     }
 
@@ -80,11 +87,13 @@ const onConnect = async (req, res) => {
           }
         });
 
-        // Include buttons in the UI object for the next state
+        // Including buttons in the UI object for the next state
         if (nextState.buttons) {
           responseData.UI.buttons = nextState.buttons.map((button) => ({
-            id: button.id,
-            text: button.text,
+            id: button?.id,
+            text: button?.text,
+            //action
+            action: button?.action,
           }));
         }
       }

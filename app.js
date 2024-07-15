@@ -21,9 +21,9 @@ app.use(
 app.use('/api/authv2', authRouter);
 
 app.listen(
-  3000,
+  3001,
   '0.0.0.0', //  'localhost
   () => {
-    console.log('Server is running on port 3000');
+    console.log('Server is running on port 3001');
   }
 );

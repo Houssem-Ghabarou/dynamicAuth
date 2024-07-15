@@ -1,4 +1,7 @@
 export async function onSubmit(nextUI, api, method, data) {
+  console.log(api, 'api');
+  console.log(data, 'data');
+  console.log(method, 'method');
   let responseData;
 
   try {
@@ -8,6 +11,7 @@ export async function onSubmit(nextUI, api, method, data) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
+      console.log(response, 'result');
       const result = await response.json();
 
       if (result.status === 'error') {
