@@ -11,15 +11,23 @@ export const auth = {
             title2: 'Please log in with otp',
           },
           fields: [
-            { name: 'username', type: 'text', placeholder: 'Enter username' },
-            { name: 'username', type: 'text', placeholder: 'Enter username' },
-            { name: 'username', type: 'text', placeholder: 'Enter username' },
-            { name: 'username', type: 'text', placeholder: 'Enter username' },
-
             {
-              name: 'phone',
-              type: 'phone',
-              placeholder: 'Enter Phone',
+              name: 'username',
+              type: 'text',
+              placeholder: 'Enter username',
+              required: true,
+            },
+            {
+              name: 'email',
+              type: 'email',
+              placeholder: 'Enter email',
+              required: true,
+            },
+            {
+              name: 'SAMLURL',
+              type: 'SAMLURL',
+              placeholder: 'SAMLURL',
+              required: true,
             },
           ],
           descriptions: {
@@ -27,41 +35,50 @@ export const auth = {
           },
           buttons: [
             {
-              id: 'btn_send_code',
+              id: 'btn_send_code1',
               text: 'Send code',
               action: {
                 nextUI: 'inputCode',
-                api: 'https://jsonplaceholder.typicode.com/todos/1',
+                api: 'https://jsonplaceholder.typicode.com/posts',
                 method: 'POST',
               },
             },
-            {
-              id: 'btn_send_code',
-              text: 'Send code',
-              action: {
-                nextUI: 'inputCode',
-                api: 'https://jsonplaceholder.typicode.com/todos/1',
-                method: 'POST',
-              },
-            },
-            {
-              id: 'btn_send_code',
-              text: 'Send code',
-              action: {
-                nextUI: 'inputCode',
-                api: 'https://jsonplaceholder.typicode.com/todos/1',
-                method: 'POST',
-              },
-            },
+
+            // {
+            //   id: 'btn_send_code2',
+            //   text: 'Send code',
+            //   action: {
+            //     nextUI: 'inputCode',
+            //     api: 'https://jsonplaceholder.typicode.com/todos/1',
+            //     method: 'POST',
+            //   },
+            // },
+            // {
+            //   id: 'btn_send_code3',
+            //   text: 'Send code',
+            //   action: {
+            //     nextUI: 'inputCode',
+            //     api: 'https://jsonplaceholder.typicode.com/todos/1',
+            //     method: 'POST',
+            //   },
+            // },
           ],
         },
         inputCode: {
           screenTitle: 'Enter Code',
-          fields: [{ name: 'code', type: 'code', placeholder: 'enter code' }],
+          fields: [
+            {
+              name: 'code',
+              type: 'number',
+              placeholder: 'enter code',
+              required: true,
+            },
+          ],
           buttons: [
             {
               id: 'verify_code',
               text: 'verify code',
+              metadata: {},
               action: {
                 nextUI: 'success',
                 api: 'https://jsonplaceholder.typicode.com/todos/',
@@ -70,15 +87,19 @@ export const auth = {
             },
             //resend code button
             {
+              type: 'primary',
               id: 'btn_resend_code',
               text: 'Resend Code',
               action: {
+                nextUI: 'inputCode',
                 api: 'https://jsonplaceholder.typicode.com/todos/',
                 method: 'POST',
               },
             },
             {
+              type: 'secondary',
               id: 'btn_back_to_otp_login',
+              noapicall: true,
               text: 'Back to otp Login',
               action: {
                 nextUI: 'initialState',

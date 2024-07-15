@@ -1,10 +1,10 @@
 import { auth, returnedKeys } from './login-flows/auth.js';
 import { onSubmit } from './login-flows/onSubmit.js';
-
+import { validateForm } from './validation.js';
 const onConnect = async (req, res) => {
   if (req?.method === 'GET') {
     const { state = 'initialState' } = req?.query;
-    console.log(state || 'no state provided in initial', 'currentState');
+    // console.log(state || 'no state provided in initial', 'currentState');
 
     const response = {};
 
@@ -62,9 +62,24 @@ const onConnect = async (req, res) => {
       return res.status(400).json({ error: 'Invalid button ID' });
     }
 
+    //fileds validation
+    const fields = state?.fields;
+
+    //work only if noapicall is not present in the button
+    if (fields && !button?.noapicall) {
+      const { isValid, errors } = validateForm(fields, data);
+
+      // console.log(isValid, 'isValid');
+      // console.log(errors, 'errors');
+
+      if (!isValid) {
+        return res.status(400).json({ error: errors });
+      }
+    }
+
     const actionConfig = button.action;
 
-    console.log(actionConfig, 'actionConfig');
+    // console.log(actionConfig, 'actionConfig');
     try {
       const responseData = await onSubmit(
         actionConfig.nextUI,
