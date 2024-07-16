@@ -1,5 +1,7 @@
 import express from 'express';
 import authRouter from './routes/authV2Routes.js';
+import twilioRouter from './routes/twilioRoutes.js';
+import loginMaximoRoutes from './routes/loginMaximo.js';
 import cors from 'cors';
 const app = express();
 
@@ -19,11 +21,13 @@ app.use(
   })
 );
 app.use('/api/authv2', authRouter);
+app.use('/api/twilio', twilioRouter);
+app.use('/api/loginmaximo', loginMaximoRoutes);
 
 app.listen(
-  3000,
+  3001,
   '0.0.0.0', //  'localhost
   () => {
-    console.log('Server is running on port 3000');
+    console.log('Server is running on port 3001');
   }
 );

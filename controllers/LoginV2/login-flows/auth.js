@@ -25,9 +25,10 @@ export const auth = {
             },
             {
               name: 'SAMLURL',
-              type: 'SAMLURL',
+              type: 'text',
               placeholder: 'SAMLURL',
               required: true,
+              length: 10,
             },
           ],
           descriptions: {
@@ -39,6 +40,7 @@ export const auth = {
               text: 'Send code',
               action: {
                 nextUI: 'inputCode',
+
                 api: 'https://jsonplaceholder.typicode.com/posts',
                 method: 'POST',
               },
@@ -72,6 +74,7 @@ export const auth = {
               type: 'number',
               placeholder: 'enter code',
               required: true,
+              length: 6,
             },
           ],
           buttons: [

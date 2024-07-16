@@ -77,14 +77,14 @@ const onConnect = async (req, res) => {
       }
     }
 
-    const actionConfig = button.action;
+    const actionConfig = button?.action;
 
     // console.log(actionConfig, 'actionConfig');
     try {
       const responseData = await onSubmit(
-        actionConfig.nextUI,
-        actionConfig.api,
-        actionConfig.method,
+        actionConfig?.nextUI,
+        actionConfig?.api,
+        actionConfig?.method,
         data
       );
 
