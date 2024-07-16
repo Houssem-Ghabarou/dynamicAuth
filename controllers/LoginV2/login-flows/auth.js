@@ -5,10 +5,10 @@ export const auth = {
     standard: {
       states: {
         initialState: {
-          screenTitle: 'OTP LOGIN',
+          screenTitle: 'Twilio',
           titles: {
             title1: 'Welcome User',
-            title2: 'Please log in with otp',
+            title2: 'Please Enter username and password',
           },
           fields: [
             {
@@ -18,55 +18,29 @@ export const auth = {
               required: true,
             },
             {
-              name: 'email',
-              type: 'email',
-              placeholder: 'Enter email',
+              name: 'password',
+              type: 'password',
+              placeholder: 'Enter password',
               required: true,
-            },
-            {
-              name: 'SAMLURL',
-              type: 'text',
-              placeholder: 'SAMLURL',
-              required: true,
-              length: 10,
             },
           ],
           descriptions: {
-            description1: 'otp login with phone',
+            description1: 'User login description',
           },
           buttons: [
             {
-              id: 'btn_send_code1',
-              text: 'Send code',
+              id: 'btn_login_maximo',
+              text: 'Continue to Maximo',
               action: {
-                nextUI: 'inputCode',
+                nextUI: 'twilioInputCode',
 
-                api: 'https://jsonplaceholder.typicode.com/posts',
+                api: 'http://localhost:3001/api/loginmaximo',
                 method: 'POST',
               },
             },
-
-            // {
-            //   id: 'btn_send_code2',
-            //   text: 'Send code',
-            //   action: {
-            //     nextUI: 'inputCode',
-            //     api: 'https://jsonplaceholder.typicode.com/todos/1',
-            //     method: 'POST',
-            //   },
-            // },
-            // {
-            //   id: 'btn_send_code3',
-            //   text: 'Send code',
-            //   action: {
-            //     nextUI: 'inputCode',
-            //     api: 'https://jsonplaceholder.typicode.com/todos/1',
-            //     method: 'POST',
-            //   },
-            // },
           ],
         },
-        inputCode: {
+        twilioInputCode: {
           screenTitle: 'Enter Code',
           fields: [
             {
@@ -74,7 +48,7 @@ export const auth = {
               type: 'number',
               placeholder: 'enter code',
               required: true,
-              length: 6,
+              // length: 6,
             },
           ],
           buttons: [
@@ -84,35 +58,35 @@ export const auth = {
               metadata: {},
               action: {
                 nextUI: 'success',
-                api: 'https://jsonplaceholder.typicode.com/todos/',
+                api: 'http://localhost:3001/api/twilio/confirm-code',
                 method: 'POST',
               },
             },
             //resend code button
-            {
-              type: 'primary',
-              id: 'btn_resend_code',
-              text: 'Resend Code',
-              action: {
-                nextUI: 'inputCode',
-                api: 'https://jsonplaceholder.typicode.com/todos/',
-                method: 'POST',
-              },
-            },
-            {
-              type: 'secondary',
-              id: 'btn_back_to_otp_login',
-              noapicall: true,
-              text: 'Back to otp Login',
-              action: {
-                nextUI: 'initialState',
-              },
-            },
+            // {
+            //   type: 'primary',
+            //   id: 'btn_resend_code',
+            //   text: 'Resend Code',
+            //   action: {
+            //     nextUI: 'inputCode',
+            //     api: 'https://jsonplaceholder.typicode.com/todos/',
+            //     method: 'POST',
+            //   },
+            // },
+            // {
+            //   type: 'secondary',
+            //   id: 'btn_back_to_otp_login',
+            //   noapicall: true,
+            //   text: 'Back to otp Login',
+            //   action: {
+            //     nextUI: 'initialState',
+            //   },
+            // },
           ],
         },
         success: {
-          screenTitle: 'OTP User Login Successful',
-          successMessage: 'OTP User Login Successful!',
+          screenTitle: 'twilio User Login Successful',
+          successMessage: 'twilio User Login Successful!',
         },
       },
     },

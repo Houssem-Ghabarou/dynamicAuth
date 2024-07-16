@@ -14,6 +14,11 @@ const client = twilio(accountSid, authToken);
 router.post('/confirm-code', async (req, res) => {
   const { phoneNumber, code } = req.body;
 
+  if (!phoneNumber || !code) {
+    return res
+      .status(400)
+      .json({ success: false, message: 'Phone number and code are required' });
+  }
   try {
     const verificationCheck = await client.verify.v2
       .services(verifySid)
