@@ -41,6 +41,7 @@ const onConnect = async (req, res) => {
 
     res.json(response);
   } else if (req?.method === 'POST') {
+    console.log(req?.body, 'req.body');
     const { currentState, buttonId, data, userType = 'standard' } = req.body;
 
     if (!auth.userTypes.includes(userType)) {

@@ -1,43 +1,36 @@
-export async function onSubmit(nextUI, api, method, data) {
-  // console.log(api, 'api');
-  // console.log(data, 'data');
-  // console.log(method, 'method');
-  let responseData;
+import axiosInstance from '../../../axios/index.js';
 
+export async function onSubmit(nextUI, api, method, data) {
   try {
     if (api) {
-      const response = await fetch(api, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-      // console.log(response, 'result');
-      const result = await response.json();
+      const result = await axiosInstance?.[method?.toLowerCase()](api, data);
 
-      console.log(result, 'result');
-      if (result.status === 'error') {
-        responseData = {
-          errorMessage: result.message,
+      if (result?.status === 'error' || result?.data?.status === 'error') {
+        const responseData = {
+          errorMessage: result.message || result?.data?.message,
         };
+        return responseData;
       } else {
-        responseData = {
+        const responseData = {
           nextUI,
-          data: result,
+          data: result?.data,
         };
+        return responseData;
       }
     } else {
-      responseData = {
+      const responseData = {
         nextUI,
       };
+      return responseData;
     }
-
-    return responseData;
   } catch (error) {
-    console.error('Error in onSubmit:', error);
+    console.error('Error in onSubmit:');
+    console.log(error?.response?.data?.message);
     return {
       errorMessage:
-        //specify whcih api
-        ` Error in ${api} API: ${error.message} `,
+        error?.response?.data?.message ||
+        error.message ||
+        'Internal server error',
     };
   }
 }

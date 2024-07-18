@@ -12,7 +12,7 @@ export const auth = {
           },
           fields: [
             {
-              name: 'username',
+              name: 'login',
               type: 'text',
               placeholder: 'Enter username',
               required: true,
@@ -21,6 +21,13 @@ export const auth = {
               name: 'password',
               type: 'password',
               placeholder: 'Enter password',
+              required: true,
+            },
+            //ipAddress
+            {
+              name: 'ipAddress',
+              type: 'text',
+              placeholder: 'Enter IP Address',
               required: true,
             },
           ],
@@ -34,7 +41,7 @@ export const auth = {
               action: {
                 nextUI: 'twilioInputCode',
 
-                api: 'http://localhost:3001/api/loginmaximo',
+                api: 'https://localhost:4104/auth/verifyuserexit',
                 method: 'POST',
               },
             },
@@ -58,7 +65,7 @@ export const auth = {
               metadata: {},
               action: {
                 nextUI: 'success',
-                api: 'http://localhost:3001/api/twilio/confirm-code',
+                api: 'https://localhost:4104/auth/verifyOTP',
                 method: 'POST',
               },
             },
