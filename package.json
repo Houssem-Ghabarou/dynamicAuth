@@ -5,19 +5,25 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon  --env-file=.env app.js "
+    "start": "nodemon  --env-file=.env app.js ",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/preset-env": "^7.24.8",
     "axios": "^1.7.2",
+    "babel-jest": "^29.7.0",
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "https": "^1.0.0",
     "joi": "^17.13.3",
     "nodemon": "^3.1.4",
     "twilio": "^5.2.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
   }
 }

@@ -41,8 +41,9 @@ export const auth = {
               action: {
                 nextUI: 'twilioInputCode',
 
-                api: 'https://localhost:4104/auth/verifyuserexit',
+                api: 'https://localhost:4104/auth/verifyuserexist',
                 method: 'POST',
+                dataToRetrieve: ['phoneNumber'],
               },
             },
           ],
@@ -67,28 +68,9 @@ export const auth = {
                 nextUI: 'success',
                 api: 'https://localhost:4104/auth/verifyOTP',
                 method: 'POST',
+                OnSubmitFinally: true, // Add this flag
               },
             },
-            //resend code button
-            // {
-            //   type: 'primary',
-            //   id: 'btn_resend_code',
-            //   text: 'Resend Code',
-            //   action: {
-            //     nextUI: 'inputCode',
-            //     api: 'https://jsonplaceholder.typicode.com/todos/',
-            //     method: 'POST',
-            //   },
-            // },
-            // {
-            //   type: 'secondary',
-            //   id: 'btn_back_to_otp_login',
-            //   noapicall: true,
-            //   text: 'Back to otp Login',
-            //   action: {
-            //     nextUI: 'initialState',
-            //   },
-            // },
           ],
         },
         success: {
