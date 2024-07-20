@@ -73,10 +73,6 @@ export const auth = {
             },
           ],
         },
-        success: {
-          screenTitle: 'twilio User Login Successful',
-          successMessage: 'twilio User Login Successful!',
-        },
       },
     },
     admin: {
