@@ -1,13 +1,18 @@
 import axiosInstance from '../../../axios/index.js';
 
-export async function onSubmit(nextUI, api, method, data) {
+export async function onSubmit(nextUI, api, method = 'GET', data) {
   try {
     if (api) {
       const result = await axiosInstance?.[method?.toLowerCase()](api, data);
 
-      if (result?.status === 'error' || result?.data?.status === 'error') {
+      if (
+        result?.status === 'error' ||
+        result?.data?.status === 'error' ||
+        result?.success === false ||
+        result?.data?.success === false
+      ) {
         const responseData = {
-          errorMessage: result.message || result?.data?.message,
+          errorMessage: result?.message || result?.data?.message,
         };
         return responseData;
       } else {

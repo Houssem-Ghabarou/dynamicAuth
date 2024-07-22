@@ -13,14 +13,24 @@ const onConnect = async (req, res) => {
       const flow = auth?.flows?.[userType];
       if (!flow) {
         /// go to next iteration or if it s on last iteration then break
-        continue;
+        return res
+          .status(400)
+          .json({ error: 'Invalid user type make sure usertypes are correct' });
       }
       const currentState = flow?.states?.[state] || flow?.states?.initialState;
 
+      if (!currentState) {
+        return res
+          .status(400)
+          .json({ error: 'Invalid state add states for the users' });
+      }
       response[userType] = {
         UI: {},
       };
 
+      if (returnedKeys?.length === 0) {
+        return res.status(400).json({ error: 'Invalid keys to return ' });
+      }
       returnedKeys?.forEach((key) => {
         if (currentState?.[key]) {
           response[userType].UI[key] = currentState?.[key];
@@ -42,7 +52,7 @@ const onConnect = async (req, res) => {
     res.json(response);
   } else if (req?.method === 'POST') {
     console.log(req?.body, 'req.body');
-    const { currentState, buttonId, data, userType = 'standard' } = req.body;
+    const { currentState, buttonId, data, userType = 'standard' } = req?.body;
 
     if (!auth.userTypes.includes(userType)) {
       return res.status(400).json({ error: 'Invalid user type' });
@@ -105,7 +115,7 @@ const onConnect = async (req, res) => {
 
         // Including buttons in the UI object for the next state
         if (nextState.buttons) {
-          responseData.UI.buttons = nextState.buttons.map((button) => ({
+          responseData.UI.buttons = nextState?.buttons?.map((button) => ({
             id: button?.id,
             text: button?.text,
             //action
